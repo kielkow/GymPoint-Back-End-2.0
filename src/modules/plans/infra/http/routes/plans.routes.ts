@@ -15,11 +15,9 @@ plansRouter.post(
   '/',
   celebrate({
     [Segments.BODY]: {
-      name: Joi.string().required(),
-      email: Joi.string().email().required(),
-      age: Joi.number().required(),
-      weight: Joi.number().required(),
-      height: Joi.number().required(),
+      title: Joi.string().required(),
+      duration: Joi.number().required(),
+      price: Joi.number().required(),
     },
   }),
   plansController.create,
@@ -29,11 +27,9 @@ plansRouter.put(
   '/:id',
   celebrate({
     [Segments.BODY]: {
-      name: Joi.string().required(),
-      email: Joi.string().email().required(),
-      age: Joi.number().required(),
-      weight: Joi.number().required(),
-      height: Joi.number().required(),
+      title: Joi.string().required(),
+      duration: Joi.number().required(),
+      price: Joi.number().required(),
     },
   }),
   plansController.update,
