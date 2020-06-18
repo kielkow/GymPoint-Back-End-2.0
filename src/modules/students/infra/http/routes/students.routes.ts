@@ -12,6 +12,8 @@ const upload = multer(uploadConfig.multer);
 const studentsController = new StudentsController();
 const studentAvatarController = new StudentAvatarController();
 
+studentsRouter.get('/', studentsController.index);
+
 studentsRouter.get('/:id', studentsController.show);
 
 studentsRouter.post(

@@ -12,6 +12,15 @@ class StudentsRepository implements IStudentsRepository {
     this.ormRepository = getRepository(Student);
   }
 
+  public async find(page: number): Promise<Student[]> {
+    const students = await this.ormRepository.find({
+      skip: (page - 1) * 10,
+      take: 10,
+    });
+
+    return students;
+  }
+
   public async findById(id: string): Promise<Student | undefined> {
     const student = await this.ormRepository.findOne(id);
 

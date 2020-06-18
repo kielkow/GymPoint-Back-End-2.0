@@ -7,8 +7,19 @@ import { classToClass } from 'class-transformer';
 import CreateStudentService from '@modules/students/services/CreateStudentService';
 import UpdateProfileService from '@modules/students/services/UpdateStudentService';
 import ShowProfileService from '@modules/students/services/ShowStudentService';
+import ListStudentsService from '@modules/students/services/ListStudentsService';
 
 export default class StudentsController {
+  public async index(request: Request, response: Response): Promise<Response> {
+    const page = Number(request.query.page);
+
+    const listStudentsService = container.resolve(ListStudentsService);
+
+    const students = await listStudentsService.execute({ page });
+
+    return response.json(classToClass(students));
+  }
+
   public async show(request: Request, response: Response): Promise<Response> {
     const student_id = request.params.id;
 
