@@ -66,8 +66,8 @@ export default class PlansController {
 
     const deletePlanService = container.resolve(DeletePlanService);
 
-    const plan = await deletePlanService.execute({ plan_id });
+    await deletePlanService.execute({ plan_id });
 
-    return response.json(classToClass(plan));
+    return response.status(204).json({});
   }
 }

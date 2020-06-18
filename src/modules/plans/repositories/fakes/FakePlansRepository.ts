@@ -3,6 +3,7 @@ import { uuid } from 'uuidv4';
 import IPlansRepository from '@modules/plans/repositories/IPlansRepository';
 import ICreatePlanDTO from '@modules/plans/dtos/ICreatePlanDTO';
 
+import AppError from '@shared/errors/AppError';
 import Plan from '../../infra/typeorm/entities/Plan';
 
 class FakePlansRepository implements IPlansRepository {
@@ -45,6 +46,16 @@ class FakePlansRepository implements IPlansRepository {
     this.plans[findIndex] = plan;
 
     return plan;
+  }
+
+  public async delete(id: string): Promise<void | undefined> {
+    const findPlan = this.plans.find(plan => plan.id === id);
+
+    if (!findPlan) throw new AppError('Plan not found');
+
+    const plansNotDeleted = this.plans.filter(plan => plan.id !== id);
+
+    this.plans = plansNotDeleted;
   }
 }
 

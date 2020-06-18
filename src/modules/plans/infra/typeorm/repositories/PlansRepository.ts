@@ -3,6 +3,7 @@ import { getRepository, Repository } from 'typeorm';
 import IPlansRepository from '@modules/plans/repositories/IPlansRepository';
 import ICreatePlanDTO from '@modules/plans/dtos/ICreatePlanDTO';
 
+import AppError from '@shared/errors/AppError';
 import Plan from '../entities/Plan';
 
 class PlansRepository implements IPlansRepository {
@@ -43,6 +44,14 @@ class PlansRepository implements IPlansRepository {
 
   public async save(plan: Plan): Promise<Plan> {
     return this.ormRepository.save(plan);
+  }
+
+  public async delete(id: string): Promise<void | undefined> {
+    const plan = await this.ormRepository.findOne(id);
+
+    if (!plan) throw new AppError('Plan not found.');
+
+    await this.ormRepository.delete(id);
   }
 }
 

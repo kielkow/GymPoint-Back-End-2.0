@@ -7,4 +7,5 @@ export default interface IPlansRepository {
   findByTitle(title: string): Promise<Plan | undefined>;
   create(data: ICreatePlanDTO): Promise<Plan>;
   save(plan: Plan): Promise<Plan>;
+  delete(id: string): Promise<void | undefined>;
 }
