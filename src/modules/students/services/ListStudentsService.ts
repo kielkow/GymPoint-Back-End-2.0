@@ -8,6 +8,7 @@ import Student from '../infra/typeorm/entities/Student';
 
 interface IRequest {
   page: number;
+  name?: string;
 }
 
 @injectable()
@@ -17,8 +18,8 @@ class ListStudentsService {
     private studentsRepository: IStudentsRepository,
   ) {}
 
-  public async execute({ page }: IRequest): Promise<Student[]> {
-    const students = await this.studentsRepository.find(page);
+  public async execute({ page, name }: IRequest): Promise<Student[]> {
+    const students = await this.studentsRepository.find(page, name);
 
     if (!students) {
       throw new AppError('Students not found.');

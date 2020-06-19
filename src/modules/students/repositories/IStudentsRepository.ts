@@ -2,7 +2,7 @@ import Student from '../infra/typeorm/entities/Student';
 import ICreateStudentDTO from '../dtos/ICreateStudentDTO';
 
 export default interface IStudentsRepository {
-  find(page: number): Promise<Student[]>;
+  find(page: number, name?: string): Promise<Student[]>;
   findAllByName(name: string): Promise<Student[]>;
 
   findById(id: string): Promise<Student | undefined>;

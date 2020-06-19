@@ -11,11 +11,13 @@ import ListStudentsService from '@modules/students/services/ListStudentsService'
 
 export default class StudentsController {
   public async index(request: Request, response: Response): Promise<Response> {
-    const page = Number(request.query.page);
+    const page = request.query.page ? Number(request.query.page) : 1;
+
+    const name = request.query.name ? String(request.query.name) : undefined;
 
     const listStudentsService = container.resolve(ListStudentsService);
 
-    const students = await listStudentsService.execute({ page });
+    const students = await listStudentsService.execute({ page, name });
 
     return response.json(classToClass(students));
   }

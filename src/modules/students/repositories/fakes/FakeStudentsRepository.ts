@@ -8,7 +8,20 @@ import Student from '../../infra/typeorm/entities/Student';
 class FakeStudentsRepository implements IStudentsRepository {
   private students: Student[] = [];
 
-  public async find(page: number): Promise<Student[]> {
+  public async find(page = 1, name?: string): Promise<Student[]> {
+    if (name) {
+      const skip = (page - 1) * 10;
+      const take = skip + 10;
+
+      const findStudents = this.students.slice(skip, take);
+
+      const findStudentsWithName = findStudents.filter(student =>
+        student.name.includes(name),
+      );
+
+      return findStudentsWithName;
+    }
+
     const skip = (page - 1) * 10;
     const take = skip + 10;
 

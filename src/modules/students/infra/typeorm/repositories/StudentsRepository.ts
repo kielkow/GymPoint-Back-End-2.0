@@ -12,7 +12,19 @@ class StudentsRepository implements IStudentsRepository {
     this.ormRepository = getRepository(Student);
   }
 
-  public async find(page: number): Promise<Student[]> {
+  public async find(page = 1, name?: string): Promise<Student[]> {
+    if (name) {
+      const students = await this.ormRepository.find({
+        where: {
+          name: Like(`%${name}%`),
+        },
+        skip: (page - 1) * 10,
+        take: 10,
+      });
+
+      return students;
+    }
+
     const students = await this.ormRepository.find({
       skip: (page - 1) * 10,
       take: 10,
