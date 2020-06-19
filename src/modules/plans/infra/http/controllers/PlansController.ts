@@ -12,11 +12,12 @@ import ListPlansService from '@modules/plans/services/ListPlansService';
 
 export default class PlansController {
   public async index(request: Request, response: Response): Promise<Response> {
-    const page = Number(request.query.page);
+    const page = request.query.page ? Number(request.query.page) : 1;
+    const title = request.query.title ? String(request.query.title) : undefined;
 
     const listPlansService = container.resolve(ListPlansService);
 
-    const plans = await listPlansService.execute({ page });
+    const plans = await listPlansService.execute({ page, title });
 
     return response.json(classToClass(plans));
   }

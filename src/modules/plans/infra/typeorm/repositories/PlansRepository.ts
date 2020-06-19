@@ -1,4 +1,4 @@
-import { getRepository, Repository } from 'typeorm';
+import { getRepository, Repository, Like } from 'typeorm';
 
 import IPlansRepository from '@modules/plans/repositories/IPlansRepository';
 import ICreatePlanDTO from '@modules/plans/dtos/ICreatePlanDTO';
@@ -13,7 +13,19 @@ class PlansRepository implements IPlansRepository {
     this.ormRepository = getRepository(Plan);
   }
 
-  public async find(page: number): Promise<Plan[]> {
+  public async find(page = 1, title?: string): Promise<Plan[]> {
+    if (title) {
+      const plans = await this.ormRepository.find({
+        where: {
+          title: Like(`%${title}%`),
+        },
+        skip: (page - 1) * 10,
+        take: 10,
+      });
+
+      return plans;
+    }
+
     const plans = await this.ormRepository.find({
       skip: (page - 1) * 10,
       take: 10,

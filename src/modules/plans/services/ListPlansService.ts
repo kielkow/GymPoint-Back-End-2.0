@@ -8,6 +8,7 @@ import Plan from '../infra/typeorm/entities/Plan';
 
 interface IRequest {
   page: number;
+  title?: string;
 }
 
 @injectable()
@@ -17,8 +18,8 @@ class ListPlansService {
     private plansRepository: IPlansRepository,
   ) {}
 
-  public async execute({ page }: IRequest): Promise<Plan[]> {
-    const plans = await this.plansRepository.find(page);
+  public async execute({ page = 1, title }: IRequest): Promise<Plan[]> {
+    const plans = await this.plansRepository.find(page, title);
 
     if (!plans) {
       throw new AppError('Plans not found.');

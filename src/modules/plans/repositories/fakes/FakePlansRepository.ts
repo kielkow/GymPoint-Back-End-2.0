@@ -9,7 +9,20 @@ import Plan from '../../infra/typeorm/entities/Plan';
 class FakePlansRepository implements IPlansRepository {
   private plans: Plan[] = [];
 
-  public async find(page: number): Promise<Plan[]> {
+  public async find(page = 1, title?: string): Promise<Plan[]> {
+    if (title) {
+      const findPlansByTitle = this.plans.filter(plan =>
+        plan.title.includes(title),
+      );
+
+      const skip = (page - 1) * 10;
+      const take = skip + 10;
+
+      const findPlans = findPlansByTitle.slice(skip, take);
+
+      return findPlans;
+    }
+
     const skip = (page - 1) * 10;
     const take = skip + 10;
 
