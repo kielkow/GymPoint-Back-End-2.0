@@ -4,7 +4,7 @@ import ListPlansService from './ListPlansService';
 let fakePlansRepository: FakePlansRepository;
 let listPlans: ListPlansService;
 
-describe('UpdateProfile', () => {
+describe('ListPlans', () => {
   beforeEach(() => {
     fakePlansRepository = new FakePlansRepository();
 

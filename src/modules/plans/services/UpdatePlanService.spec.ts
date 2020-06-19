@@ -32,7 +32,7 @@ describe('UpdatePlan', () => {
     expect(updatedPlan.price).toBe(1200);
   });
 
-  it('should not be able to update from non-existing plan', async () => {
+  it('should not be able to update non-existing plan', async () => {
     await expect(
       updatePlan.execute({
         plan_id: 'non-existing-plan-id',

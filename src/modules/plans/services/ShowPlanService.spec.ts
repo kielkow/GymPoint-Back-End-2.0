@@ -6,7 +6,7 @@ import ShowPlanService from './ShowPlanService';
 let fakePlansRepository: FakePlansRepository;
 let showPlan: ShowPlanService;
 
-describe('UpdateProfile', () => {
+describe('ShowPlan', () => {
   beforeEach(() => {
     fakePlansRepository = new FakePlansRepository();
 
@@ -29,7 +29,7 @@ describe('UpdateProfile', () => {
     expect(profile.price).toBe(200);
   });
 
-  it('should not be able to show the profile from non-existing plan', async () => {
+  it('should not be able to show non-existing plan', async () => {
     await expect(
       showPlan.execute({
         plan_id: 'non-existing-plan-id',
