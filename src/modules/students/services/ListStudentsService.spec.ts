@@ -36,7 +36,7 @@ describe('UpdateProfile', () => {
       weight: 83.56,
     });
 
-    const students = await listStudents.execute({ page: 1, name: '' });
+    const students = await listStudents.execute({ page: 1 });
 
     expect(students).toEqual([student1, student2, student3]);
   });
