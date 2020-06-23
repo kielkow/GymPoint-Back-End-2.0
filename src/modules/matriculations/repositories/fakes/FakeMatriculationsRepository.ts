@@ -6,13 +6,10 @@ import ICreateMatriculationDTO from '@modules/matriculations/dtos/ICreateMatricu
 import AppError from '@shared/errors/AppError';
 
 import Student from '@modules/students/infra/typeorm/entities/Student';
-import Plan from '@modules/plans/infra/typeorm/entities/Plan';
 import Matriculation from '../../infra/typeorm/entities/Matriculation';
 
 class FakeMatriculationsRepository implements IMatriculationsRepository {
   private students: Student[] = [];
-
-  private plans: Plan[] = [];
 
   private matriculations: Matriculation[] = [];
 
@@ -40,7 +37,9 @@ class FakeMatriculationsRepository implements IMatriculationsRepository {
   }
 
   public async findById(id: string): Promise<Matriculation | undefined> {
-    const findMatriculation = this.matriculations.find(plan => plan.id === id);
+    const findMatriculation = this.matriculations.find(
+      matriculation => matriculation.id === id,
+    );
 
     return findMatriculation;
   }
@@ -66,32 +65,34 @@ class FakeMatriculationsRepository implements IMatriculationsRepository {
   public async create(
     matriculationData: ICreateMatriculationDTO,
   ): Promise<Matriculation> {
-    const plan = new Matriculation();
+    const matriculation = new Matriculation();
 
-    Object.assign(plan, { id: uuid() }, matriculationData);
+    Object.assign(matriculation, { id: uuid() }, matriculationData);
 
-    this.matriculations.push(plan);
+    this.matriculations.push(matriculation);
 
-    return plan;
+    return matriculation;
   }
 
-  public async save(plan: Matriculation): Promise<Matriculation> {
+  public async save(matriculation: Matriculation): Promise<Matriculation> {
     const findIndex = this.matriculations.findIndex(
-      findMatriculation => findMatriculation.id === plan.id,
+      findMatriculation => findMatriculation.id === matriculation.id,
     );
 
-    this.matriculations[findIndex] = plan;
+    this.matriculations[findIndex] = matriculation;
 
-    return plan;
+    return matriculation;
   }
 
   public async delete(id: string): Promise<void | undefined> {
-    const findMatriculation = this.matriculations.find(plan => plan.id === id);
+    const findMatriculation = this.matriculations.find(
+      matriculation => matriculation.id === id,
+    );
 
     if (!findMatriculation) throw new AppError('Matriculation not found');
 
     const matriculationsNotDeleted = this.matriculations.filter(
-      plan => plan.id !== id,
+      matriculation => matriculation.id !== id,
     );
 
     this.matriculations = matriculationsNotDeleted;
