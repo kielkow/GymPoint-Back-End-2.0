@@ -24,6 +24,9 @@ class ShowMatriculationService {
       throw new AppError('Matriculation not found.');
     }
 
+    delete matriculation.student_id;
+    delete matriculation.plan_id;
+
     return matriculation;
   }
 }
