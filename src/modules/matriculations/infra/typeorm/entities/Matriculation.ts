@@ -20,14 +20,14 @@ class Matriculation {
   @Column()
   student_id: string;
 
-  @OneToOne(() => Student)
+  @OneToOne(() => Student, { eager: true })
   @JoinColumn({ name: 'student_id' })
   student: Student;
 
   @Column()
   plan_id: string;
 
-  @ManyToOne(() => Plan)
+  @ManyToOne(() => Plan, { eager: true })
   @JoinColumn({ name: 'plan_id' })
   plan: Plan;
 
