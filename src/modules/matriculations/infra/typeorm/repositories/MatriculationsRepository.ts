@@ -68,6 +68,18 @@ class MatriculationsRepository implements IMatriculationsRepository {
     return matriculation;
   }
 
+  public async findByStudentId(
+    student_id: string,
+  ): Promise<Matriculation | undefined> {
+    const matriculation = await this.ormRepository.findOne({
+      where: {
+        student_id,
+      },
+    });
+
+    return matriculation;
+  }
+
   public async create(
     matriculationData: ICreateMatriculationDTO,
   ): Promise<Matriculation> {

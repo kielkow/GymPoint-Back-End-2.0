@@ -7,7 +7,7 @@ const matriculationsRouter = Router();
 
 const matriculationsController = new MatriculationsController();
 
-matriculationsRouter.get('/', matriculationsController.index);
+// matriculationsRouter.get('/', matriculationsController.index);
 
 matriculationsRouter.get('/:id', matriculationsController.show);
 
@@ -23,17 +23,17 @@ matriculationsRouter.post(
   matriculationsController.create,
 );
 
-matriculationsRouter.put(
-  '/:id',
-  celebrate({
-    [Segments.BODY]: {
-      plan_id: Joi.string().required(),
-      start_date: Joi.date().required(),
-    },
-  }),
-  matriculationsController.update,
-);
+// matriculationsRouter.put(
+//   '/:id',
+//   celebrate({
+//     [Segments.BODY]: {
+//       plan_id: Joi.string().required(),
+//       start_date: Joi.date().required(),
+//     },
+//   }),
+//   matriculationsController.update,
+// );
 
-matriculationsRouter.delete('/:id', matriculationsController.delete);
+// matriculationsRouter.delete('/:id', matriculationsController.delete);
 
 export default matriculationsRouter;

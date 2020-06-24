@@ -6,6 +6,7 @@ import {
   UpdateDateColumn,
   JoinColumn,
   OneToOne,
+  ManyToOne,
 } from 'typeorm';
 
 import Student from '@modules/students/infra/typeorm/entities/Student';
@@ -26,7 +27,7 @@ class Matriculation {
   @Column()
   plan_id: string;
 
-  @OneToOne(() => Plan)
+  @ManyToOne(() => Plan)
   @JoinColumn({ name: 'plan_id' })
   plan: Plan;
 

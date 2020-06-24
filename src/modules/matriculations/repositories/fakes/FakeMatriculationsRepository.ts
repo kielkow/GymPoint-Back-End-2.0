@@ -62,6 +62,16 @@ class FakeMatriculationsRepository implements IMatriculationsRepository {
     return findMatriculation;
   }
 
+  public async findByStudentId(
+    student_id: string,
+  ): Promise<Matriculation | undefined> {
+    const findMatriculation = this.matriculations.find(
+      matriculation => matriculation.student_id === student_id,
+    );
+
+    return findMatriculation;
+  }
+
   public async create(
     matriculationData: ICreateMatriculationDTO,
   ): Promise<Matriculation> {
