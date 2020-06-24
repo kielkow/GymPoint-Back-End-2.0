@@ -1,19 +1,19 @@
 import AppError from '@shared/errors/AppError';
 
 import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
-import FakeStudentsRepository from '@modules/students/repositories/fakes/FakeStudentsRepository';
-import FakePlansRepository from '@modules/plans/repositories/fakes/FakePlansRepository';
 
+import FakeStudentsRepository from '@modules/students/repositories/fakes/FakeStudentsRepository';
 import CreateStudentService from '@modules/students/services/CreateStudentService';
+
+import FakePlansRepository from '@modules/plans/repositories/fakes/FakePlansRepository';
 import CreatePlanService from '@modules/plans/services/CreatePlanService';
-import CreateMatriculationService from './CreateMatriculationService';
 
 import FakeMatriculationsRepository from '../repositories/fakes/FakeMatriculationsRepository';
+import CreateMatriculationService from './CreateMatriculationService';
 
 let fakeMatriculationsRepository: FakeMatriculationsRepository;
 let fakeStudentsRepository: FakeStudentsRepository;
 let fakePlansRepository: FakePlansRepository;
-
 let fakeCacheProvider: FakeCacheProvider;
 
 let createMatriculation: CreateMatriculationService;
@@ -25,10 +25,11 @@ describe('CreateMatriculation', () => {
     fakeMatriculationsRepository = new FakeMatriculationsRepository();
     fakeStudentsRepository = new FakeStudentsRepository();
     fakePlansRepository = new FakePlansRepository();
-
     fakeCacheProvider = new FakeCacheProvider();
 
     createMatriculation = new CreateMatriculationService(
+      fakeStudentsRepository,
+      fakePlansRepository,
       fakeMatriculationsRepository,
       fakeCacheProvider,
     );
@@ -65,7 +66,7 @@ describe('CreateMatriculation', () => {
     expect(matriculation).toHaveProperty('id');
   });
 
-  it('should not be able to create a new matriculation with same e-mail from another', async () => {
+  it('should not be able to create a new matriculation with same ID from another', async () => {
     const student = await createStudent.execute({
       name: 'John Doe',
       email: 'johndoe@example.com',

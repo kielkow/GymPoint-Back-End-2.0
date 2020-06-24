@@ -22,7 +22,7 @@ class FakeMatriculationsRepository implements IMatriculationsRepository {
       const studentsId = findStudents.map(findStudent => findStudent.id);
 
       const findMatriculations = this.matriculations.filter(matriculation =>
-        studentsId.includes(matriculation.student_id),
+        studentsId.includes(matriculation.student.id),
       );
 
       return findMatriculations;
@@ -56,7 +56,7 @@ class FakeMatriculationsRepository implements IMatriculationsRepository {
     }
 
     const findMatriculation = this.matriculations.find(
-      matriculation => matriculation.student_id === findStudent.id,
+      matriculation => matriculation.student.id === findStudent.id,
     );
 
     return findMatriculation;
@@ -66,7 +66,7 @@ class FakeMatriculationsRepository implements IMatriculationsRepository {
     student_id: string,
   ): Promise<Matriculation | undefined> {
     const findMatriculation = this.matriculations.find(
-      matriculation => matriculation.student_id === student_id,
+      matriculation => matriculation.student.id === student_id,
     );
 
     return findMatriculation;

@@ -31,6 +31,8 @@ describe('CreateMatriculation', () => {
     fakeCacheProvider = new FakeCacheProvider();
 
     createMatriculation = new CreateMatriculationService(
+      fakeStudentsRepository,
+      fakePlansRepository,
       fakeMatriculationsRepository,
       fakeCacheProvider,
     );
@@ -46,7 +48,7 @@ describe('CreateMatriculation', () => {
 
     createPlan = new CreatePlanService(fakePlansRepository, fakeCacheProvider);
   });
-  it('should be able to delete a matriculation', async () => {
+  it('should be able to show a matriculation', async () => {
     const student = await createStudent.execute({
       name: 'John Doe',
       email: 'johndoe@example.com',
@@ -74,7 +76,7 @@ describe('CreateMatriculation', () => {
     expect(createdMatriculation).toHaveProperty('id');
   });
 
-  it('should not be able to delete a non-existing matriculation', async () => {
+  it('should not be able to show a non-existing matriculation', async () => {
     await expect(
       showMatriculation.execute({
         matriculation_id: 'non-existing-matriculation-id',
