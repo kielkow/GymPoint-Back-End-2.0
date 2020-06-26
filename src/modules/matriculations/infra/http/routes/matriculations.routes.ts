@@ -23,16 +23,16 @@ matriculationsRouter.post(
   matriculationsController.create,
 );
 
-// matriculationsRouter.put(
-//   '/:id',
-//   celebrate({
-//     [Segments.BODY]: {
-//       plan_id: Joi.string().required(),
-//       start_date: Joi.date().required(),
-//     },
-//   }),
-//   matriculationsController.update,
-// );
+matriculationsRouter.put(
+  '/:id',
+  celebrate({
+    [Segments.BODY]: {
+      plan_id: Joi.string(),
+      start_date: Joi.date(),
+    },
+  }),
+  matriculationsController.update,
+);
 
 matriculationsRouter.delete('/:id', matriculationsController.delete);
 

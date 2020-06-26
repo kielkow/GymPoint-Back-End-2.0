@@ -39,6 +39,19 @@ class MatriculationsRepository implements IMatriculationsRepository {
     return matriculation;
   }
 
+  public async findByStudentName(
+    student_name: string,
+  ): Promise<Matriculation | undefined> {
+    const matriculation = await this.ormRepository
+      .createQueryBuilder('matriculation')
+      .leftJoinAndSelect('matriculation.student', 'student')
+      .leftJoinAndSelect('matriculation.plan', 'plan')
+      .where('student.name = :name', { name: student_name })
+      .getOne();
+
+    return matriculation;
+  }
+
   public async findByStudentId(
     student_id: string,
   ): Promise<Matriculation | undefined> {
