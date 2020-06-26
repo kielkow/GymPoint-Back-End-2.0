@@ -1,29 +1,26 @@
 import { uuid } from 'uuidv4';
 
 import IMatriculationsRepository from '@modules/matriculations/repositories/IMatriculationsRepository';
+
 import ICreateMatriculationDTO from '@modules/matriculations/dtos/ICreateMatriculationDTO';
 
 import AppError from '@shared/errors/AppError';
 
-import Student from '@modules/students/infra/typeorm/entities/Student';
 import Matriculation from '../../infra/typeorm/entities/Matriculation';
 
 class FakeMatriculationsRepository implements IMatriculationsRepository {
-  private students: Student[] = [];
-
   private matriculations: Matriculation[] = [];
 
   public async find(page = 1, student_name?: string): Promise<Matriculation[]> {
     if (student_name) {
-      const findStudents = this.students.filter(student =>
-        student.name.includes(student_name),
+      this.matriculations = this.matriculations.filter(matriculation =>
+        matriculation.student.name.includes(student_name),
       );
 
-      const studentsId = findStudents.map(findStudent => findStudent.id);
+      const skip = (page - 1) * 10;
+      const take = skip + 10;
 
-      const findMatriculations = this.matriculations.filter(matriculation =>
-        studentsId.includes(matriculation.student.id),
-      );
+      const findMatriculations = this.matriculations.slice(skip, take);
 
       return findMatriculations;
     }
@@ -47,17 +44,13 @@ class FakeMatriculationsRepository implements IMatriculationsRepository {
   public async findByStudentName(
     student_name: string,
   ): Promise<Matriculation | undefined> {
-    const findStudent = this.students.find(
-      student => student.name === student_name,
-    );
-
-    if (!findStudent) {
-      throw new AppError('Student not found.');
-    }
-
     const findMatriculation = this.matriculations.find(
-      matriculation => matriculation.student.id === findStudent.id,
+      matriculation => matriculation.student.name === student_name,
     );
+
+    if (!findMatriculation) {
+      throw new AppError('Matriculation with this student name not found.');
+    }
 
     return findMatriculation;
   }

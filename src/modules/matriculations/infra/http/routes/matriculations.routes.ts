@@ -7,7 +7,7 @@ const matriculationsRouter = Router();
 
 const matriculationsController = new MatriculationsController();
 
-// matriculationsRouter.get('/', matriculationsController.index);
+matriculationsRouter.get('/', matriculationsController.index);
 
 matriculationsRouter.get('/:id', matriculationsController.show);
 
@@ -34,6 +34,6 @@ matriculationsRouter.post(
 //   matriculationsController.update,
 // );
 
-// matriculationsRouter.delete('/:id', matriculationsController.delete);
+matriculationsRouter.delete('/:id', matriculationsController.delete);
 
 export default matriculationsRouter;

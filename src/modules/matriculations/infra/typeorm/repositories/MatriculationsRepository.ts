@@ -1,4 +1,4 @@
-import { getRepository, Repository, Like } from 'typeorm';
+import { getRepository, Repository } from 'typeorm';
 
 import IMatriculationsRepository from '@modules/matriculations/repositories/IMatriculationsRepository';
 import ICreateMatriculationDTO from '@modules/matriculations/dtos/ICreateMatriculationDTO';
@@ -15,21 +15,12 @@ class MatriculationsRepository implements IMatriculationsRepository {
 
   public async find(page = 1, student_name?: string): Promise<Matriculation[]> {
     if (student_name) {
-      const matriculations = await this.ormRepository.find({
-        join: {
-          alias: 'student',
-          leftJoinAndSelect: {
-            student: 'matriculation.student',
-          },
-        },
-        where: {
-          student: {
-            name: Like(`%${student_name}%`),
-          },
-        },
-        skip: (page - 1) * 10,
-        take: 10,
-      });
+      const matriculations = await this.ormRepository
+        .createQueryBuilder('matriculation')
+        .leftJoinAndSelect('matriculation.student', 'student')
+        .leftJoinAndSelect('matriculation.plan', 'plan')
+        .where('student.name like :name', { name: `%${student_name}%` })
+        .getMany();
 
       return matriculations;
     }
@@ -44,26 +35,6 @@ class MatriculationsRepository implements IMatriculationsRepository {
 
   public async findById(id: string): Promise<Matriculation | undefined> {
     const matriculation = await this.ormRepository.findOne(id);
-
-    return matriculation;
-  }
-
-  public async findByStudentName(
-    student_name: string,
-  ): Promise<Matriculation | undefined> {
-    const matriculation = await this.ormRepository.findOne({
-      join: {
-        alias: 'student',
-        leftJoinAndSelect: {
-          student: 'matriculation.student',
-        },
-      },
-      where: {
-        student: {
-          name: student_name,
-        },
-      },
-    });
 
     return matriculation;
   }
