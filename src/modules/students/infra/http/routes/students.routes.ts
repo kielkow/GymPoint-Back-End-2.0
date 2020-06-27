@@ -3,6 +3,8 @@ import multer from 'multer';
 import uploadConfig from '@config/upload';
 import { celebrate, Segments, Joi } from 'celebrate';
 
+import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated';
+
 import StudentsController from '../controllers/StudentsController';
 import StudentAvatarController from '../controllers/StudentAvatarController';
 
@@ -11,6 +13,8 @@ const upload = multer(uploadConfig.multer);
 
 const studentsController = new StudentsController();
 const studentAvatarController = new StudentAvatarController();
+
+studentsRouter.use(ensureAuthenticated);
 
 studentsRouter.get('/', studentsController.index);
 

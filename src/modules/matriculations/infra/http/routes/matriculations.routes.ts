@@ -1,11 +1,15 @@
 import { Router } from 'express';
 import { celebrate, Segments, Joi } from 'celebrate';
 
+import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated';
+
 import MatriculationsController from '../controllers/MatriculationsController';
 
 const matriculationsRouter = Router();
 
 const matriculationsController = new MatriculationsController();
+
+matriculationsRouter.use(ensureAuthenticated);
 
 matriculationsRouter.get('/', matriculationsController.index);
 
