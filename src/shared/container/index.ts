@@ -18,6 +18,9 @@ import PlansRepository from '@modules/plans/infra/typeorm/repositories/PlansRepo
 import IMatriculationsRepository from '@modules/matriculations/repositories/IMatriculationsRepository';
 import MatriculationsRepository from '@modules/matriculations/infra/typeorm/repositories/MatriculationsRepository';
 
+import ICheckinsRepository from '@modules/checkins/repositories/ICheckinsRepository';
+import CheckinsRepository from '@modules/checkins/infra/typeorm/repositories/CheckinsRepository';
+
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
   UsersRepository,
@@ -41,4 +44,9 @@ container.registerSingleton<IPlansRepository>(
 container.registerSingleton<IMatriculationsRepository>(
   'MatriculationsRepository',
   MatriculationsRepository,
+);
+
+container.registerSingleton<ICheckinsRepository>(
+  'CheckinsRepository',
+  CheckinsRepository,
 );
