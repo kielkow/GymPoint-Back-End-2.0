@@ -9,6 +9,7 @@ import studentsRouter from '@modules/students/infra/http/routes/students.routes'
 import plansRouter from '@modules/plans/infra/http/routes/plans.routes';
 import matriculationsRouter from '@modules/matriculations/infra/http/routes/matriculations.routes';
 import checkinsRouter from '@modules/checkins/infra/http/routes/checkins.routes';
+import helpordersRouter from '@modules/helporders/infra/http/routes/helporders.routes';
 
 const routes = Router();
 
@@ -21,5 +22,6 @@ routes.use('/students', studentsRouter);
 routes.use('/plans', plansRouter);
 routes.use('/matriculations', matriculationsRouter);
 routes.use('/checkins', checkinsRouter);
+routes.use('/helporders', helpordersRouter);
 
 export default routes;

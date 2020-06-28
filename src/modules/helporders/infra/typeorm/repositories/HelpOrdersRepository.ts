@@ -13,12 +13,13 @@ class HelpOrdersRepository implements IHelpOrdersRepository {
   }
 
   public async find(page = 1): Promise<HelpOrder[]> {
-    const helporders = await this.ormRepository
-      .createQueryBuilder('helporder')
-      .where('helporder.answer = :null')
-      .skip((page - 1) * 10)
-      .take(10)
-      .getMany();
+    const helporders = await this.ormRepository.find({
+      where: {
+        answer: null,
+      },
+      skip: (page - 1) * 10,
+      take: 10,
+    });
 
     return helporders;
   }

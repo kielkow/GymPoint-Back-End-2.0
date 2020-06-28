@@ -5,31 +5,31 @@ import { container } from 'tsyringe';
 import { classToClass } from 'class-transformer';
 
 import CreateHelpOrderService from '@modules/helporders/services/CreateHelpOrderService';
-import UpdateHelpOrderService from '@modules/helporders/services/UpdateHelpOrderService';
-import ShowHelpOrderService from '@modules/helporders/services/ShowHelpOrderService';
-import ListHelpOrdersService from '@modules/helporders/services/ListHelpOrdersService';
+import CreateHelpOrderAnswerService from '@modules/helporders/services/CreateHelpOrderAnswerService';
+import ListStudentHelpOrdersService from '@modules/helporders/services/ListStudentHelpOrdersService';
+import ListNoAnswerHelpOrdersService from '@modules/helporders/services/ListNoAnswerHelpOrdersService';
 
 export default class HelpOrdersController {
   public async index(request: Request, response: Response): Promise<Response> {
     const page = request.query.page ? Number(request.query.page) : 1;
 
-    const listHelpOrdersService = container.resolve(ListHelpOrdersService);
+    const listNoAnswerHelpOrdersService = container.resolve(
+      ListNoAnswerHelpOrdersService,
+    );
 
-    const helporders = await listHelpOrdersService.execute({
-      page,
-    });
+    const helporders = await listNoAnswerHelpOrdersService.execute(page);
 
     return response.json(classToClass(helporders));
   }
 
   public async show(request: Request, response: Response): Promise<Response> {
-    const page = request.query.page ? Number(request.query.page) : 1;
     const student_id = request.params.id;
 
-    const showHelpOrderService = container.resolve(ShowHelpOrderService);
+    const listStudentHelpOrdersService = container.resolve(
+      ListStudentHelpOrdersService,
+    );
 
-    const helporder = await showHelpOrderService.execute({
-      page,
+    const helporder = await listStudentHelpOrdersService.execute({
       student_id,
     });
 
@@ -54,7 +54,7 @@ export default class HelpOrdersController {
     const helporder_id = request.params.id;
     const answer = String(request.body.answer);
 
-    const updateHelpOrder = container.resolve(UpdateHelpOrderService);
+    const updateHelpOrder = container.resolve(CreateHelpOrderAnswerService);
 
     const helporder = await updateHelpOrder.execute({
       helporder_id,

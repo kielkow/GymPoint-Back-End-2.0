@@ -21,6 +21,9 @@ import MatriculationsRepository from '@modules/matriculations/infra/typeorm/repo
 import ICheckinsRepository from '@modules/checkins/repositories/ICheckinsRepository';
 import CheckinsRepository from '@modules/checkins/infra/typeorm/repositories/CheckinsRepository';
 
+import IHelpOrdersRepository from '@modules/helporders/repositories/IHelpOrdersRepository';
+import HelpOrdersRepository from '@modules/helporders/infra/typeorm/repositories/HelpOrdersRepository';
+
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
   UsersRepository,
@@ -49,4 +52,9 @@ container.registerSingleton<IMatriculationsRepository>(
 container.registerSingleton<ICheckinsRepository>(
   'CheckinsRepository',
   CheckinsRepository,
+);
+
+container.registerSingleton<IHelpOrdersRepository>(
+  'HelpOrdersRepository',
+  HelpOrdersRepository,
 );

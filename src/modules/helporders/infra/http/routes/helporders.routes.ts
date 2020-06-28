@@ -14,20 +14,20 @@ helpordersRouter.use(ensureAuthenticated);
 helpordersRouter.get('/students', helpordersController.index);
 
 helpordersRouter.get(
-  '/student/:student_id',
+  '/student/:id',
   celebrate({
     [Segments.PARAMS]: {
-      student_id: Joi.string().required(),
+      id: Joi.string().required(),
     },
   }),
   helpordersController.show,
 );
 
 helpordersRouter.post(
-  '/student/:student_id',
+  '/student/:id',
   celebrate({
     [Segments.PARAMS]: {
-      student_id: Joi.string().required(),
+      id: Joi.string().required(),
     },
     [Segments.BODY]: {
       question: Joi.string().required(),
@@ -37,10 +37,10 @@ helpordersRouter.post(
 );
 
 helpordersRouter.patch(
-  '/:helporder_id/answer',
+  '/:id/answer',
   celebrate({
     [Segments.PARAMS]: {
-      helporder_id: Joi.string().required(),
+      id: Joi.string().required(),
     },
     [Segments.BODY]: {
       answer: Joi.string().required(),
