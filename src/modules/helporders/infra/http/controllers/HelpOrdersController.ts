@@ -8,6 +8,7 @@ import CreateHelpOrderService from '@modules/helporders/services/CreateHelpOrder
 import CreateHelpOrderAnswerService from '@modules/helporders/services/CreateHelpOrderAnswerService';
 import ListStudentHelpOrdersService from '@modules/helporders/services/ListStudentHelpOrdersService';
 import ListNoAnswerHelpOrdersService from '@modules/helporders/services/ListNoAnswerHelpOrdersService';
+import SendMailHelpOrderAnswerService from '@modules/helporders/services/SendMailHelpOrderAnswerService';
 
 export default class HelpOrdersController {
   public async index(request: Request, response: Response): Promise<Response> {
@@ -55,11 +56,16 @@ export default class HelpOrdersController {
     const answer = String(request.body.answer);
 
     const updateHelpOrder = container.resolve(CreateHelpOrderAnswerService);
+    const sendMailHelpOrderAnswer = container.resolve(
+      SendMailHelpOrderAnswerService,
+    );
 
     const helporder = await updateHelpOrder.execute({
       helporder_id,
       answer,
     });
+
+    await sendMailHelpOrderAnswer.execute({ helporder_id: helporder.id });
 
     return response.json(classToClass(helporder));
   }
