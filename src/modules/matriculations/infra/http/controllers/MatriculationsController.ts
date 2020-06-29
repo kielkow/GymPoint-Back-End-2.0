@@ -5,6 +5,7 @@ import { container } from 'tsyringe';
 import { classToClass } from 'class-transformer';
 
 import CreateMatriculationService from '@modules/matriculations/services/CreateMatriculationService';
+import SendMailMatriculationSuccess from '@modules/matriculations/services/SendMailMatriculationSuccess';
 import UpdateMatriculationService from '@modules/matriculations/services/UpdateMatriculationService';
 import ShowMatriculationService from '@modules/matriculations/services/ShowMatriculationService';
 import DeleteMatriculationService from '@modules/matriculations/services/DeleteMatriculationService';
@@ -47,11 +48,18 @@ export default class MatriculationsController {
     const { student_id, plan_id, start_date } = request.body;
 
     const createMatriculation = container.resolve(CreateMatriculationService);
+    const sendMailMatriculationSuccess = container.resolve(
+      SendMailMatriculationSuccess,
+    );
 
     const matriculation = await createMatriculation.execute({
       student_id,
       plan_id,
       start_date,
+    });
+
+    await sendMailMatriculationSuccess.execute({
+      matriculation_id: matriculation.id,
     });
 
     return response.json(classToClass(matriculation));
