@@ -36,6 +36,7 @@ describe('ListMatriculations', () => {
 
     listMatriculations = new ListMatriculationsService(
       fakeMatriculationsRepository,
+      fakeCacheProvider,
     );
 
     createStudent = new CreateStudentService(

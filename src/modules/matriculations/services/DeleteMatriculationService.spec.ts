@@ -45,6 +45,7 @@ describe('DeleteMatriculation', () => {
 
     listMatriculations = new ListMatriculationsService(
       fakeMatriculationsRepository,
+      fakeCacheProvider,
     );
 
     createStudent = new CreateStudentService(
