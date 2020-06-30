@@ -2,6 +2,8 @@ import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
 
+import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
+
 import IStudentsRepository from '../repositories/IStudentsRepository';
 
 import Student from '../infra/typeorm/entities/Student';
@@ -16,13 +18,22 @@ class ListStudentsService {
   constructor(
     @inject('StudentsRepository')
     private studentsRepository: IStudentsRepository,
+
+    @inject('CacheProvider')
+    private cacheProvider: ICacheProvider,
   ) {}
 
   public async execute({ page, name }: IRequest): Promise<Student[]> {
-    const students = await this.studentsRepository.find(page, name);
+    const cacheKey = 'students-list';
+
+    let students = await this.cacheProvider.recover<Student[]>(cacheKey);
 
     if (!students) {
-      throw new AppError('Students not found.');
+      students = await this.studentsRepository.find(page, name);
+
+      if (!students) {
+        throw new AppError('Students not found.');
+      }
     }
 
     return students;

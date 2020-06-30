@@ -1,14 +1,20 @@
+import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 import FakeStudentsRepository from '../repositories/fakes/FakeStudentsRepository';
 import ListStudentsService from './ListStudentsService';
 
 let fakeStudentsRepository: FakeStudentsRepository;
+let fakeCacheProvider: FakeCacheProvider;
 let listStudents: ListStudentsService;
 
 describe('UpdateProfile', () => {
   beforeEach(() => {
     fakeStudentsRepository = new FakeStudentsRepository();
+    fakeCacheProvider = new FakeCacheProvider();
 
-    listStudents = new ListStudentsService(fakeStudentsRepository);
+    listStudents = new ListStudentsService(
+      fakeStudentsRepository,
+      fakeCacheProvider,
+    );
   });
 
   it('should be able to list the students', async () => {
