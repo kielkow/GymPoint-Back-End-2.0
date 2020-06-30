@@ -36,7 +36,7 @@ class CreateHelpOrderService {
       question,
     });
 
-    await this.cacheProvider.invalidatePrefix('helporders-list');
+    await this.cacheProvider.invalidatePrefix('helporders-noanswer-list');
 
     return helporder;
   }

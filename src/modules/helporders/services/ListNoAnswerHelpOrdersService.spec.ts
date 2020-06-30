@@ -29,6 +29,7 @@ describe('ListNoAnswerHelpOrders', () => {
 
     listNoAnswerHelpOrders = new ListNoAnswerHelpOrdersService(
       fakeHelpOrdersRepository,
+      fakeCacheProvider,
     );
 
     createStudent = new CreateStudentService(
