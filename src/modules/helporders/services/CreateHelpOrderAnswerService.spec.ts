@@ -36,6 +36,7 @@ describe('CreateHelpOrder', () => {
 
     createHelpOrderAnswer = new CreateHelpOrderAnswerService(
       fakeHelpOrdersRepository,
+      fakeCacheProvider,
     );
   });
 

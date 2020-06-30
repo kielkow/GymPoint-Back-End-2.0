@@ -2,6 +2,8 @@ import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
 
+import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
+
 import IHelpOrdersRepository from '../repositories/IHelpOrdersRepository';
 
 import HelpOrder from '../infra/typeorm/entities/HelpOrder';
@@ -16,6 +18,9 @@ class UpdateHelpOrderService {
   constructor(
     @inject('HelpOrdersRepository')
     private helpordersRepository: IHelpOrdersRepository,
+
+    @inject('CacheProvider')
+    private cacheProvider: ICacheProvider,
   ) {}
 
   public async execute({ helporder_id, answer }: IRequest): Promise<HelpOrder> {
@@ -27,6 +32,10 @@ class UpdateHelpOrderService {
 
     helporder.answer = answer;
     helporder.answer_at = new Date();
+
+    await this.cacheProvider.invalidatePrefix(
+      `student-${helporder.student.id}-helporders-list`,
+    );
 
     return this.helpordersRepository.save(helporder);
   }

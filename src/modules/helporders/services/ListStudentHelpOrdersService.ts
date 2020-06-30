@@ -2,6 +2,8 @@ import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
 
+import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
+
 import IStudentsRepository from '@modules/students/repositories/IStudentsRepository';
 import IHelpOrdersRepository from '../repositories/IHelpOrdersRepository';
 
@@ -19,21 +21,34 @@ class ListStudentHelpOrders {
 
     @inject('HelpOrdersRepository')
     private helpordersRepository: IHelpOrdersRepository,
+
+    @inject('CacheProvider')
+    private cacheProvider: ICacheProvider,
   ) {}
 
   public async execute({ student_id }: IRequest): Promise<HelpOrder[]> {
     const student = await this.studentsRepository.findById(student_id);
     if (!student) throw new AppError('Student does not exists.');
 
-    const helporders = await this.helpordersRepository.findByStudentId(
-      student_id,
+    const cacheKey = `student-${student.id}-helporders-list`;
+
+    const helpordersFromCache = await this.cacheProvider.recover<HelpOrder[]>(
+      cacheKey,
     );
 
-    if (!helporders) {
-      throw new AppError('HelpOrders not found.');
+    if (!helpordersFromCache) {
+      const helporders = await this.helpordersRepository.findByStudentId(
+        student_id,
+      );
+
+      if (!helporders) {
+        throw new AppError('HelpOrders not found.');
+      }
+
+      return helporders;
     }
 
-    return helporders;
+    return helpordersFromCache;
   }
 }
 
