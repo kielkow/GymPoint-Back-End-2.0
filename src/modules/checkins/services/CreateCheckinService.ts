@@ -39,7 +39,9 @@ class CreateCheckinService {
       student,
     });
 
-    await this.cacheProvider.invalidatePrefix('checkins-list');
+    await this.cacheProvider.invalidatePrefix(
+      `student-${student.id}-checkins-list`,
+    );
 
     return checkin;
   }

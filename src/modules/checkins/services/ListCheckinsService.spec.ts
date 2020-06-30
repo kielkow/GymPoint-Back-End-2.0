@@ -32,6 +32,7 @@ describe('ListCheckins', () => {
     listCheckins = new ListCheckinsService(
       fakeStudentsRepository,
       fakeCheckinsRepository,
+      fakeCacheProvider,
     );
 
     createStudent = new CreateStudentService(

@@ -2,6 +2,8 @@ import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
 
+import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
+
 import IStudentsRepository from '@modules/students/repositories/IStudentsRepository';
 import ICheckinsRepository from '../repositories/ICheckinsRepository';
 
@@ -19,16 +21,25 @@ class ListCheckinsService {
 
     @inject('CheckinsRepository')
     private checkinsRepository: ICheckinsRepository,
+
+    @inject('CacheProvider')
+    private cacheProvider: ICacheProvider,
   ) {}
 
   public async execute({ student_id }: IRequest): Promise<Checkin[]> {
     const student = await this.studentsRepository.findById(student_id);
     if (!student) throw new AppError('Student does not exists.');
 
-    const checkins = await this.checkinsRepository.find(student.id);
+    const cacheKey = `student-${student.id}-checkins-list`;
+
+    let checkins = await this.cacheProvider.recover<Checkin[]>(cacheKey);
 
     if (!checkins) {
-      throw new AppError('Checkins not found.');
+      checkins = await this.checkinsRepository.find(student.id);
+
+      if (!checkins) {
+        throw new AppError('Checkins not found.');
+      }
     }
 
     return checkins;
