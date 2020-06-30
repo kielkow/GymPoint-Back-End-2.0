@@ -1,14 +1,17 @@
+import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 import FakePlansRepository from '../repositories/fakes/FakePlansRepository';
 import ListPlansService from './ListPlansService';
 
 let fakePlansRepository: FakePlansRepository;
+let fakeCacheProvider: FakeCacheProvider;
 let listPlans: ListPlansService;
 
 describe('ListPlans', () => {
   beforeEach(() => {
     fakePlansRepository = new FakePlansRepository();
+    fakeCacheProvider = new FakeCacheProvider();
 
-    listPlans = new ListPlansService(fakePlansRepository);
+    listPlans = new ListPlansService(fakePlansRepository, fakeCacheProvider);
   });
 
   it('should be able to list the plans', async () => {
