@@ -11,7 +11,16 @@ const matriculationsController = new MatriculationsController();
 
 matriculationsRouter.use(ensureAuthenticated);
 
-matriculationsRouter.get('/', matriculationsController.index);
+matriculationsRouter.get(
+  '/',
+  celebrate({
+    [Segments.QUERY]: {
+      page: Joi.number(),
+      student_name: Joi.string(),
+    },
+  }),
+  matriculationsController.index,
+);
 
 matriculationsRouter.get('/:id', matriculationsController.show);
 
