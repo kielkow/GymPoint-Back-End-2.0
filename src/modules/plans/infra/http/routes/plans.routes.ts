@@ -11,7 +11,16 @@ const plansController = new PlansController();
 
 plansRouter.use(ensureAuthenticated);
 
-plansRouter.get('/', plansController.index);
+plansRouter.get(
+  '/',
+  celebrate({
+    [Segments.QUERY]: {
+      page: Joi.number(),
+      title: Joi.string(),
+    },
+  }),
+  plansController.index,
+);
 
 plansRouter.get('/:id', plansController.show);
 
