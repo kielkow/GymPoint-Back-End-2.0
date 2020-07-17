@@ -16,7 +16,16 @@ const studentAvatarController = new StudentAvatarController();
 
 studentsRouter.use(ensureAuthenticated);
 
-studentsRouter.get('/', studentsController.index);
+studentsRouter.get(
+  '/',
+  celebrate({
+    [Segments.QUERY]: {
+      page: Joi.number(),
+      name: Joi.string(),
+    },
+  }),
+  studentsController.index,
+);
 
 studentsRouter.get('/:id', studentsController.show);
 
