@@ -11,7 +11,15 @@ const helpordersController = new HelpOrdersController();
 
 helpordersRouter.use(ensureAuthenticated);
 
-helpordersRouter.get('/students', helpordersController.index);
+helpordersRouter.get(
+  '/students',
+  celebrate({
+    [Segments.QUERY]: {
+      page: Joi.number(),
+    },
+  }),
+  helpordersController.index,
+);
 
 helpordersRouter.get(
   '/student/:id',
